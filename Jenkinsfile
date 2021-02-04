@@ -26,10 +26,10 @@ pipeline {
                                         allowMissing: false,
                                         alwaysLinkToLastBuild: false,
                                         keepAll: true,
-                                        reportDir: 'coverage',
+                                        reportDir: 'build/reports/tests/',
                                         reportFiles: 'index.html',
                                         reportName: "RCov Report"
-                                        ])	
+                                        ])
             }
 
             post {

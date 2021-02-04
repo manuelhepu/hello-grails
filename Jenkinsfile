@@ -7,7 +7,6 @@ pipeline {
 
             steps {
                 withGradle {
-                    sh 'chmod +x ./gradlew'
                     sh './gradlew assemble'
 
                 }
@@ -19,10 +18,10 @@ pipeline {
         stage('Test') {
             steps {
                 withGradle {
-		            sh './gradlew TEST'
+		            sh './gradlew test'
 		            configFileProvider(
                               [configFile(fileId: 'hello-grails-gradle.properties', targetLocation: 'gradle.properties')]) {
-                              sh './gradlew iT'
+                              sh './gradlew integrationTest'
                     }
 
                 }

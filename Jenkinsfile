@@ -4,6 +4,12 @@ pipeline {
     stages {
         
         stage('Build') {
+            configFileProvider ([configFile ( fileId : hello-grails-gradle.properties, variable : ' PACKER_OPTIONS ' )]) {
+                        echo " =========== ^^^^^^^^^^^^ Leyendo la configuración del script de canalización "
+                        sh " cat $ { env.PACKER_OPTIONS } "
+                        echo " ======= ==== ~~~~~~~~~~~~ ============ "
+
+                    }
             steps {
                 withGradle {
                     sh 'chmod +x ./gradlew'
@@ -17,19 +23,10 @@ pipeline {
         stage('Test') {
             steps {
                 withGradle {
-                    sh './gradlew test'
 		            sh './gradlew -Dgeb.env=firefoxHeadless iT'
 
                 }
 
-                publishHTML (target: [
-                                        allowMissing: false,
-                                        alwaysLinkToLastBuild: false,
-                                        keepAll: true,
-                                        reportDir: 'build/reports/tests/',
-                                        reportFiles: 'index.html',
-                                        reportName: "RCov Report"
-                                        ])
             }
 
             post {

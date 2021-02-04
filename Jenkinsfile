@@ -19,8 +19,7 @@ pipeline {
             steps {
                 withGradle {
 		            sh './gradlew test'
-		            configFileProvider(
-                              [configFile(fileId: 'hello-grails-gradle.properties', targetLocation: 'gradle.properties')]) {
+		            configFileProvider([configFile(fileId: 'hello-grails-gradle.properties', targetLocation: 'gradle.properties')]) {
                               sh './gradlew integrationTest'
                     }
 
@@ -28,14 +27,6 @@ pipeline {
 
             }
 
-            post {
-                always {
-                    junit 'build/test-results/test/TEST-*.xml'
-
-
-                    
-                }
-            }
         }
 
 

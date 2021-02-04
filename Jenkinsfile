@@ -4,18 +4,14 @@ pipeline {
     stages {
         
         stage('Build') {
-            configFileProvider ([configFile ( fileId : hello-grails-gradle.properties, variable : ' PACKER_OPTIONS ' )]) {
-                        echo " =========== ^^^^^^^^^^^^ Leyendo la configuración del script de canalización "
-                        sh " cat $ { env.PACKER_OPTIONS } "
-                        echo " ======= ==== ~~~~~~~~~~~~ ============ "
 
-                    }
             steps {
                 withGradle {
                     sh 'chmod +x ./gradlew'
                     sh './gradlew assemble'
 
                 }
+
             }
 
         }
@@ -23,7 +19,11 @@ pipeline {
         stage('Test') {
             steps {
                 withGradle {
-		            sh './gradlew -Dgeb.env=firefoxHeadless iT'
+		            sh './gradlew TEST'
+		            configFileProvider(
+                              [configFile(fileId: 'hello-grails-gradle.properties', targetLocation: 'gradle.properties')]) {
+                              sh './gradlew iT'
+                    }
 
                 }
 

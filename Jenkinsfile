@@ -24,6 +24,10 @@ pipeline {
                     }
 
                 }
+		    
+		    withSonarQubeEnv(credentialsId: 'c8c23d90-c1f4-4828-910a-97bfca0f6944', installationName: 'local') {
+                    sh './gradlew clean sonarqube'
+                }
 
             }
 
